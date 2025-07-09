@@ -498,7 +498,7 @@ const InvoicePreview: React.FC = () => {
                 padding: '4px 8px',
                 fontSize: '10px'
               }}>
-                SGST......9%
+                SGST......2.5%
               </td>
               <td style={{ 
                 border: '1px solid #000', 
@@ -521,7 +521,7 @@ const InvoicePreview: React.FC = () => {
                 padding: '4px 8px',
                 fontSize: '10px'
               }}>
-                CGST......9%
+                CGST......2.5%
               </td>
               <td style={{ 
                 border: '1px solid #000', 

@@ -86,8 +86,8 @@ const GenerateReceipt: React.FC = () => {
     const subtotal = total + accessoryCharges;
     const discount = (subtotal * specialDiscount) / 100;
     const taxableAmount = subtotal - discount;
-    const cgst = taxableAmount * 0.09; // 9% CGST
-    const sgst = taxableAmount * 0.09; // 9% SGST
+    const cgst = taxableAmount * 0.025; // 2.5% CGST
+    const sgst = taxableAmount * 0.025; // 2.5% SGST
     const totalAmount = taxableAmount + cgst + sgst;
     
     setCalculations({
@@ -498,12 +498,12 @@ const GenerateReceipt: React.FC = () => {
               </div>
               
               <div className="flex justify-between">
-                <span className="text-gray-600">CGST (9%)</span>
+                <span className="text-gray-600">CGST (2.5%)</span>
                 <span className="font-semibold">₹{calculations.cgst.toLocaleString()}</span>
               </div>
               
               <div className="flex justify-between">
-                <span className="text-gray-600">SGST (9%)</span>
+                <span className="text-gray-600">SGST (2.5%)</span>
                 <span className="font-semibold">₹{calculations.sgst.toLocaleString()}</span>
               </div>
               
