@@ -6,11 +6,15 @@ import { Download, Printer, ArrowLeft } from 'lucide-react';
 import { RootState } from '../store';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { ToWords } from 'to-words';
 
 const InvoicePreview: React.FC = () => {
   const navigate = useNavigate();
   const { currentReceipt } = useSelector((state: RootState) => state.receipt);
   const componentRef = useRef<HTMLDivElement>(null);
+  const toWords = new ToWords({
+    localeCode: 'en-IN'
+  });
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -491,7 +495,7 @@ const InvoicePreview: React.FC = () => {
                 padding: '4px 8px',
                 fontSize: '10px'
               }}>
-                Rupees {currentReceipt.totalAmount.toLocaleString()} Only
+                Rupees {toWords.convert(currentReceipt.totalAmount)} Only
               </td>
               <td colSpan={3} style={{ 
                 border: '1px solid #000', 
