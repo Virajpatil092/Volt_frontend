@@ -22,40 +22,75 @@ const InvoicePreview: React.FC = () => {
   });
 
   const handleDownloadPDF = async () => {
-    if (componentRef.current) {
-      const element = componentRef.current;
+    const element = componentRef.current;
+    if (!element) return;
 
-      try {
-        const dataUrl = await toPng(element, {
-          quality: 1,
-          pixelRatio: 4,
-          cacheBust: true,
-        });
+    try {
+      const dataUrl = await toPng(element, {
+        quality: 1,
+        pixelRatio: 2,
+        cacheBust: true,
+      });
 
-        const img = new Image();
-        img.src = dataUrl;
-        img.onload = () => {
-          const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-          });
+      const img = new Image();
+      img.src = dataUrl;
 
-          const pageWidth = 210;
+      img.onload = () => {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();     // 210mm
+        const pageHeight = pdf.internal.pageSize.getHeight();   // 297mm
 
-          const imgProps = {
-            width: pageWidth,
-            height: (img.height * pageWidth) / img.width,
-          };
+        const paddingTop = 10;    // mm
+        const paddingBottom = 10; // mm
+        const usablePageHeight = pageHeight - paddingTop - paddingBottom;
 
-          pdf.addImage(dataUrl, 'PNG', 0, 0, imgProps.width, imgProps.height);
-          pdf.save(`Invoice-${currentReceipt?.receiptNumber || 'Receipt'}.pdf`);
-        };
-      } catch (error) {
-        console.error('PDF download failed:', error);
-      }
+        // Convert pixels to mm
+        const pxPerMm = img.width / pageWidth;
+        const pageHeightPx = usablePageHeight * pxPerMm;
+
+        const totalPages = Math.ceil(img.height / pageHeightPx);
+
+        for (let i = 0; i < totalPages; i++) {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+
+          canvas.width = img.width;
+          canvas.height = pageHeightPx;
+
+          context?.drawImage(
+            img,
+            0,
+            i * pageHeightPx,
+            img.width,
+            pageHeightPx,
+            0,
+            0,
+            img.width,
+            pageHeightPx
+          );
+
+          const pageDataUrl = canvas.toDataURL('image/png');
+
+          if (i > 0) pdf.addPage();
+
+          pdf.addImage(
+            pageDataUrl,
+            'PNG',
+            0,
+            paddingTop,
+            pageWidth,
+            usablePageHeight
+          );
+        }
+
+        pdf.save(`Invoice-${currentReceipt?.receiptNumber || 'Receipt'}.pdf`);
+      };
+    } catch (error) {
+      console.error('PDF generation failed:', error);
     }
   };
+
+
 
   if (!currentReceipt) {
     return (
