@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
-import { Download, Printer, ArrowLeft } from 'lucide-react';
+import { Download, Printer } from 'lucide-react';
 import { RootState } from '../store';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { ToWords } from 'to-words';
+import { toPng } from 'html-to-image';
 
 const InvoicePreview: React.FC = () => {
   const navigate = useNavigate();
@@ -16,43 +16,41 @@ const InvoicePreview: React.FC = () => {
     localeCode: 'en-IN'
   });
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: `Invoice-${currentReceipt?.receiptNumber}`,
-  });
+  const handlePrint = useReactToPrint({componentRef});
 
   const handleDownloadPDF = async () => {
     if (componentRef.current) {
-      const canvas = await html2canvas(componentRef.current, {
-        scale: 2,
-        useCORS: true,
-      });
-      
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
-      
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
+      const element = componentRef.current;
 
-      let position = 0;
+      try {
+        const dataUrl = await toPng(element, {
+          quality: 1,
+          pixelRatio: 4,
+          cacheBust: true,
+        });
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-      
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        const img = new Image();
+        img.src = dataUrl;
+        img.onload = () => {
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+          });
+
+          const pageWidth = 210;
+
+          const imgProps = {
+            width: pageWidth,
+            height: (img.height * pageWidth) / img.width,
+          };
+
+          pdf.addImage(dataUrl, 'PNG', 0, 0, imgProps.width, imgProps.height);
+          pdf.save(`Invoice-${currentReceipt?.receiptNumber || 'Receipt'}.pdf`);
+        };
+      } catch (error) {
+        console.error('PDF download failed:', error);
       }
-      
-      pdf.save(`Invoice-${currentReceipt?.receiptNumber}.pdf`);
     }
   };
 
