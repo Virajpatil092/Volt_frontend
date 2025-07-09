@@ -7,7 +7,7 @@ import { RootState } from '../store';
 import jsPDF from 'jspdf';
 import { ToWords } from 'to-words';
 import { toPng } from 'html-to-image';
-
+ 
 const InvoicePreview: React.FC = () => {
   const navigate = useNavigate();
   const { currentReceipt } = useSelector((state: RootState) => state.receipt);
@@ -16,7 +16,10 @@ const InvoicePreview: React.FC = () => {
     localeCode: 'en-IN'
   });
 
-  const handlePrint = useReactToPrint({componentRef});
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: `Invoice-${currentReceipt?.receiptNumber}`,
+  });
 
   const handleDownloadPDF = async () => {
     if (componentRef.current) {
@@ -83,7 +86,7 @@ const InvoicePreview: React.FC = () => {
           </div>
           <div className="flex space-x-3">
             <button
-              onClick={handlePrint}
+              onClick={() => handlePrint()}
               className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
             >
               <Printer className="h-4 w-4" />
