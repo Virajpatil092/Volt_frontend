@@ -40,7 +40,7 @@ const InvoicePreview: React.FC = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();     // 210mm
         const pageHeight = pdf.internal.pageSize.getHeight();   // 297mm
 
-        const paddingTop = 10;    // mm
+        const paddingTop = 0;    // mm
         const paddingBottom = 10; // mm
         const usablePageHeight = pageHeight - paddingTop - paddingBottom;
 
@@ -139,7 +139,7 @@ const InvoicePreview: React.FC = () => {
       </div>
 
       <div className="bg-white shadow-lg">
-        <div ref={componentRef} className="bg-white" style={{ 
+        <div  ref={componentRef} style={{ 
           width: '210mm', 
           minHeight: '297mm', 
           padding: '10mm',
@@ -147,13 +147,14 @@ const InvoicePreview: React.FC = () => {
           fontSize: '11px',
           lineHeight: '1.2',
           color: '#000'
+          ,flexGrow: 1, display: 'flex', flexDirection: 'column'
         }}>
-          
           {/* Main Invoice Table */}
           <table style={{ 
             width: '100%', 
             borderCollapse: 'collapse',
-            border: '2px solid #000'
+            border: '2px solid #000',
+            flexGrow: 1
           }}>
             {/* Header Row */}
             <tr>
