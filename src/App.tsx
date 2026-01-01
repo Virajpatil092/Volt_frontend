@@ -11,6 +11,8 @@ import PlaceOrder from './pages/PlaceOrder';
 import GenerateReceipt from './pages/GenerateReceipt';
 import InvoicePreview from './pages/InvoicePreview';
 import ReceiptFilter from './pages/ReceiptFilter';
+import Battery from './pages/Battery';
+import Models from './pages/Models';
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
             <Route path="generate-receipt" element={<GenerateReceipt />} />
             <Route path="invoice-preview" element={<InvoicePreview />} />
             <Route path="receipt-filter" element={<ReceiptFilter />} />
+            <Route path="batteries" element={<Battery />} />
+            <Route path="models" element={<Models />} />
+            
           </Route>
         </Routes>
       </Router>

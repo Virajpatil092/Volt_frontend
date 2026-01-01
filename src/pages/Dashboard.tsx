@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit2, ShoppingCart, Package, Battery, Zap, Trash2 } from 'lucide-react';
 import { RootState, AppDispatch } from '../store';
 import { 
@@ -174,10 +174,10 @@ const Dashboard: React.FC = () => {
               <div className="bg-teal-100 p-2 sm:p-3 rounded-lg">
                 <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-teal-600" />
               </div>
-              <div>
+              <Link to="/models" className="hover:underline">
                 <p className="text-xs sm:text-sm text-gray-600">Total Models</p>
                 <p className="text-xl sm:text-2xl font-bold text-gray-800">{models.length}</p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -188,10 +188,10 @@ const Dashboard: React.FC = () => {
               <div className="bg-green-100 p-2 sm:p-3 rounded-lg">
                 <Battery className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
               </div>
-              <div>
+              <Link to="/batteries" className="hover:underline">
                 <p className="text-xs sm:text-sm text-gray-600">Total Batteries</p>
                 <p className="text-xl sm:text-2xl font-bold text-gray-800">{batteries.length}</p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
