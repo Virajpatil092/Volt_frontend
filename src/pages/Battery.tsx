@@ -8,7 +8,13 @@ const Battery = () => {
     const [Battery, setBattery] = useState([]);
 
     useEffect(() => {
-        batteriesAPI.getBatteries();
+        
+        const fetchBatteries = async () => {
+            const data: any = await batteriesAPI.getBatteries();
+            setBattery(data);
+        }
+
+        fetchBatteries();
     }, []);
 
     const deleteBattery = (battery: any) => {

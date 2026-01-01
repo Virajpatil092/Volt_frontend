@@ -8,7 +8,12 @@ const Models = () => {
     const [Models, setModels] = useState([]);
 
     useEffect(() => {
-        modelsAPI.getModels();
+        const fetchModels = async () => {
+            const data: any = await modelsAPI.getModels();
+            setModels(data);
+        }
+
+        fetchModels();
     }, []);
 
     const deleteModel = (model: any) => {
