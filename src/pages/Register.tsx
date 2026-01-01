@@ -56,7 +56,7 @@ const Register: React.FC = () => {
               <Zap className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-800 mb-2">Volts Plus</h1>
-            <p className="text-gray-600">Sign in to your account</p>
+            <p className="text-gray-600">Create a new account</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -129,10 +129,10 @@ const Register: React.FC = () => {
               {loading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Signing in...
+                  Creating your account...
                 </div>
               ) : (
-                'Sign In'
+                'Register'
               )}
             </button>
           </form>
