@@ -129,6 +129,20 @@ export const createBattery = createAsyncThunk(
   }
 );
 
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (id: string, { rejectWithValue, dispatch }) => {
+    try {
+      await productsAPI.deleteProduct(id);
+      // Refresh products list to get the latest data
+      dispatch(fetchProducts());
+      return id;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete product');
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,

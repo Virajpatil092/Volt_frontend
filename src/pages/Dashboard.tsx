@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit2, ShoppingCart, Package, Battery, Zap } from 'lucide-react';
+import { Plus, Edit2, ShoppingCart, Package, Battery, Zap, Trash2 } from 'lucide-react';
 import { RootState, AppDispatch } from '../store';
 import { 
   fetchProducts, 
+  deleteProduct,
   fetchModels, 
   fetchBatteries, 
   createProduct, 
@@ -19,6 +20,7 @@ import AddProductModal from '../components/AddProductModal';
 import AddModelModal from '../components/AddModelModal';
 import AddBatteryModal from '../components/AddBatteryModal';
 import UpdateQuantityModal from '../components/UpdateQuantityModal';
+
 
 const Dashboard: React.FC = () => {
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -81,6 +83,19 @@ const Dashboard: React.FC = () => {
       setShowAddBattery(false);
     } catch (error) {
       console.error('Failed to add battery:', error);
+    }
+  };
+
+  const handleDeleteProduct = async (product: any) => {
+    if (!product._id) {
+      console.error('Product ID is missing');
+      return;
+    }
+    try {
+      await dispatch(deleteProduct(product._id));
+    }
+    catch (error) {
+      console.error('Failed to delete product:', error);
     }
   };
 
@@ -319,6 +334,14 @@ const Dashboard: React.FC = () => {
                       <ShoppingCart className="h-4 w-4" />
                       <span className="hidden sm:inline">Add to Cart</span>
                       <span className="sm:hidden">Add</span>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProduct(product)}
+                      className="text-red-600 hover:text-red-900 inline-flex items-center space-x-1 justify-center sm:justify-start"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      <span className="hidden sm:inline">Delete</span>
+                      <span className="sm:hidden">Del</span>
                     </button>
                     </div>
                   </td>
