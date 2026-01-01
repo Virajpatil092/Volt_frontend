@@ -38,6 +38,8 @@ export const authAPI = {
     api.post('/auth/login', { email, password }),
   logout: () => api.post('/auth/logout'),
   verifyToken: () => api.get('/auth/verify'),
+  register: (email: string, password: string) => 
+    api.post('/auth/register', { email, password }),
 };
 
 export const productsAPI = {
