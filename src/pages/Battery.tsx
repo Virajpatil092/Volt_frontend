@@ -10,8 +10,8 @@ const Battery = () => {
     useEffect(() => {
         
         const fetchBatteries = async () => {
-            const data: any = await batteriesAPI.getBatteries();
-            setBattery(data);
+            const response: any = await batteriesAPI.getBatteries();
+            setBattery(response.data);
         }
 
         fetchBatteries();

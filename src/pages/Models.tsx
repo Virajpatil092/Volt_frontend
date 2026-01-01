@@ -9,8 +9,8 @@ const Models = () => {
 
     useEffect(() => {
         const fetchModels = async () => {
-            const data: any = await modelsAPI.getModels();
-            setModels(data);
+            const response: any = await modelsAPI.getModels();
+            setModels(response.data);
         }
 
         fetchModels();
