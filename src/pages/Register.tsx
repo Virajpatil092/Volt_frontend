@@ -140,7 +140,7 @@ const Register: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
               Already have an account?
-              <button type="button" onclick={() => navigate('/login')} className="ml-1 text-blue-600 hover:underline font-medium"> Log In </button>
+              <button type="button" onClick={() => navigate('/login')} className="ml-1 text-blue-600 hover:underline font-medium"> Log In </button>
             </p>
           </div>
         </div>
