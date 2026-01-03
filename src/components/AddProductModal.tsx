@@ -24,17 +24,14 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   const handleFormSubmit = (data: any) => {
     // Find the selected model and battery objects
     const selectedModel = models.find(model => model.name === data.modelName);
-    const selectedBattery = batteries.find(battery => battery.name === data.batteryName);
+    const selectedBattery = batteries.find(battery => battery._id === data.batteryId);
     
     const productData = {
       model: {
         name: selectedModel?.name || data.modelName,
         accessoryCharge: selectedModel?.accessoryCharge || 0
       },
-      battery: {
-        name: selectedBattery?.name || data.batteryName,
-        capacity: selectedBattery?.capacity || data.batteryCapacity
-      },
+      battery: selectedBattery,
       range: parseInt(data.range),
       rate: parseInt(data.rate),
       availableQuantity: parseInt(data.availableQuantity),
@@ -81,18 +78,18 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
               Battery
             </label>
             <select
-              {...register('batteryName', { required: 'Battery is required' })}
+              {...register('batteryId', { required: 'Battery is required' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a battery</option>
               {batteries.map((battery) => (
-                <option key={battery.name} value={battery.name}>
+                <option key={battery._id} value={battery._id}>
                   {battery.name} - {battery.capacity}
                 </option>
               ))}
             </select>
-            {errors.batteryName && (
-              <p className="mt-1 text-sm text-red-600">{errors.batteryName.message}</p>
+            {errors.batteryId && (
+              <p className="mt-1 text-sm text-red-600">{errors.batteryId.message}</p>
             )}
           </div>
 
